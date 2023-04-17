@@ -15,20 +15,16 @@ public class Statement extends Proposition {
 
     public Statement(Proposition left, char operator, Proposition right) {
         super(false);
-        this.leftChild = left;
-        left.parent = this;
+        this.setLeftChild(left);
         this.operator = operator;
-        this.rightChild = right;
-        right.parent = this;
+        this.setRightChild(right);
     }
 
     public Statement(Proposition left, char operator, Proposition right, boolean isNegative) {
         super(isNegative);
-        this.leftChild = left;
-        this.leftChild.parent = this;
+        this.setLeftChild(left);
         this.operator = operator;
-        this.rightChild = right;
-        this.rightChild.parent = this;
+        this.setRightChild(right);
         
     }
 
@@ -51,7 +47,7 @@ public class Statement extends Proposition {
      */
     public void setLeftChild(Proposition newChild) {
         this.leftChild = newChild;
-        newChild.parent = this;
+        this.leftChild.parent = this;
     }
 
     /**
@@ -59,7 +55,7 @@ public class Statement extends Proposition {
      */
     public void setRightChild(Proposition newChild) {
         this.rightChild = newChild;
-        newChild.parent = this;
+        this.rightChild.parent = this;
     }
     /**
      * Removes > and = operators if they exist, replacing them appropriately
@@ -75,8 +71,8 @@ public class Statement extends Proposition {
     private void biConditional() {
         Statement newLeft = new Statement(this.leftChild.copy().negate(), IMPLIES, this.rightChild.copy());
         Statement newRight = new Statement(this.rightChild.negate(), IMPLIES, this.leftChild);
-        this.leftChild = newLeft;
-        this.rightChild = newRight;
+        setLeftChild(newLeft);
+        setRightChild(newRight);
         this.operator = AND;
     }
 
@@ -123,10 +119,10 @@ public class Statement extends Proposition {
                 return false;
             }
 
-            Statement newLeft = new Statement(goodChild, OR, badChild.leftChild);
-            Statement newRight = new Statement(goodChild, OR, badChild.rightChild);
-            this.leftChild = newLeft;
-            this.rightChild = newRight;
+            Statement newLeft = new Statement(goodChild.copy(), OR, badChild.leftChild.copy());
+            Statement newRight = new Statement(goodChild.copy(), OR, badChild.rightChild.copy());
+            this.setLeftChild(newLeft);
+            this.setRightChild(newRight);
             this.operator = AND;
             return true;
         }
