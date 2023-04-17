@@ -16,8 +16,20 @@ public class Statement extends Proposition {
     public Statement(Proposition left, char operator, Proposition right) {
         super(false);
         this.leftChild = left;
+        left.parent = this;
         this.operator = operator;
         this.rightChild = right;
+        right.parent = this;
+    }
+
+    public Statement(Proposition left, char operator, Proposition right, boolean isNegative) {
+        super(isNegative);
+        this.leftChild = left;
+        this.leftChild.parent = this;
+        this.operator = operator;
+        this.rightChild = right;
+        this.rightChild.parent = this;
+        
     }
 
     /**
@@ -34,6 +46,21 @@ public class Statement extends Proposition {
         newChild.parent = this;
     }
 
+    /**
+     * Sets the left child node and updates its parent
+     */
+    public void setLeftChild(Proposition newChild) {
+        this.leftChild = newChild;
+        newChild.parent = this;
+    }
+
+    /**
+     * Sets the right child node and updates its parent
+     */
+    public void setRightChild(Proposition newChild) {
+        this.rightChild = newChild;
+        newChild.parent = this;
+    }
     /**
      * Removes > and = operators if they exist, replacing them appropriately
      */
