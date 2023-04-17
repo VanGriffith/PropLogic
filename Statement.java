@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 public class Statement extends Proposition {
     char operator;
@@ -132,13 +131,13 @@ public class Statement extends Proposition {
     /**
      * Collects clauses throughout the tree, recursively, assuming the tree is in CNF
      */
-    public void collectClauses(ArrayList<PriorityQueue<String>> clauses) {
+    public void collectClauses(ArrayList<ArrayList<String>> clauses) {
         if (this.operator == AND) {
             this.leftChild.collectClauses(clauses);
             this.rightChild.collectClauses(clauses);
         }
         else if (this.operator == OR) {
-            PriorityQueue<String> clause = new PriorityQueue<String>();
+            ArrayList<String> clause = new ArrayList<String>();
             clauses.add(clause);
             this.leftChild.collectClause(clause);
             this.rightChild.collectClause(clause);
@@ -154,7 +153,7 @@ public class Statement extends Proposition {
      * be called on statements with OR operators
      * @param clause - an arraylist 
      */
-    public void collectClause(PriorityQueue<String> clause) {
+    public void collectClause(ArrayList<String> clause) {
         if (this.operator != OR) {
             throw new Error("Clause failure: OR expected," + this.operator + " found.\n");
         }

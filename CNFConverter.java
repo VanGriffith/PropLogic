@@ -1,6 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -16,21 +16,25 @@ public class CNFConverter {
         tree.removeImplications();
         tree.applyDeMorgans();
         tree.applyDistributions();
-        ArrayList<PriorityQueue<String>> clauses = tree.collectClauses();
+        ArrayList<ArrayList<String>> clauses = tree.collectClauses();
+        ArrayList<String> clauseStrings = new ArrayList<String>();
 
-        PriorityQueue<String> clauseStrings = new PriorityQueue<String>();
         for (int i = 0; i < clauses.size(); i++) {
-            PriorityQueue<String> clause = clauses.get(i);
+            ArrayList<String> clause = clauses.get(i);
+            Collections.sort(clause);
             String clauseString = "";
 
             for (String literal: clause) {
                 clauseString += "," + literal;
             }
-            clauseStrings.add(clauseString.substring(1));
+            clauseString = clauseString.substring(1);
+            if (!clauseStrings.contains(clauseString)) clauseStrings.add(clauseString);
         }
-        
+        Collections.sort(clauseStrings);
         for (String s: clauseStrings) {
-            System.out.println(s);
+            if (s.charAt(0) != '!') {
+                System.out.println(s);
+            }
         }
     }
 }
@@ -109,8 +113,8 @@ class Tree {
      * Collects the clauses of the tree
      * @return
      */
-    public ArrayList<PriorityQueue<String>> collectClauses() {
-        ArrayList<PriorityQueue<String>> clauses = new ArrayList<PriorityQueue<String>>();
+    public ArrayList<ArrayList<String>> collectClauses() {
+        ArrayList<ArrayList<String>> clauses = new ArrayList<ArrayList<String>>();
         this.root.collectClauses(clauses);
 
         return clauses;

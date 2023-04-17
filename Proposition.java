@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 abstract class Proposition {
     public static final char NOT = '~';
@@ -14,11 +13,19 @@ abstract class Proposition {
     public boolean isNegative;
     public Statement parent;
 
+    /**
+     * Marks the thang as negative if positive and vice versa
+     * @return a pointer to itself
+     */
     public Proposition negate() {
         this.isNegative = !this.isNegative;
         return this;
     }
 
+    /**
+     * General Proposition constructor
+     * @param isNegative
+     */
     public Proposition(boolean isNegative) {
         this.isNegative = isNegative;
         this.parent = null;
@@ -26,6 +33,6 @@ abstract class Proposition {
 
     abstract Proposition copy();
     abstract boolean isStatement();
-    abstract void collectClause(PriorityQueue<String> clause);
-    abstract void collectClauses(ArrayList<PriorityQueue<String>> clauses);
+    abstract void collectClause(ArrayList<String> clause);
+    abstract void collectClauses(ArrayList<ArrayList<String>> clauses);
 }
