@@ -13,9 +13,13 @@ public class CNFConverter {
         sentence = sentence.replaceAll("\\s", "");
         Tree tree = new Tree(sentence);
 
+        System.out.println(tree.toString());
         tree.removeImplications();
+        System.out.println(tree.toString());
         tree.applyDeMorgans();
+        System.out.println(tree.toString());
         tree.applyDistributions();
+        System.out.println(tree.toString());
         ArrayList<ArrayList<String>> clauses = tree.collectClauses();
         ArrayList<String> clauseStrings = new ArrayList<String>();
 
@@ -118,7 +122,12 @@ class Tree {
         this.root.collectClauses(clauses);
 
         return clauses;
+    }
 
+    @Override
+    public String toString() {
+        if (this.root == null) return "null";
+        else return this.root.toString();
     }
     
     /**

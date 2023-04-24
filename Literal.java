@@ -48,5 +48,10 @@ public class Literal extends Proposition {
     public boolean isStatement() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return (this.isNegative ? "~" : "") + this.letter;
+    }
     
 }

@@ -68,8 +68,8 @@ public class Statement extends Proposition {
      * Turns P=Q into (~P>Q)&(~Q>P)
      */
     private void biConditional() {
-        Statement newLeft = new Statement(this.leftChild.copy().negate(), IMPLIES, this.rightChild.copy());
-        Statement newRight = new Statement(this.rightChild.negate(), IMPLIES, this.leftChild);
+        Statement newLeft = new Statement(this.leftChild.copy(), IMPLIES, this.rightChild.copy());
+        Statement newRight = new Statement(this.rightChild.copy(), IMPLIES, this.leftChild.copy());
         setLeftChild(newLeft);
         setRightChild(newRight);
         this.operator = AND;
@@ -175,5 +175,12 @@ public class Statement extends Proposition {
      */
     public boolean isStatement() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        String neg = (this.isNegative ? "~" : "");
+        
+        return neg + "(" + this.leftChild.toString() + " " + this.operator + " " + this.rightChild.toString() + ")";
     }
 }
