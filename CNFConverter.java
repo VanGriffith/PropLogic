@@ -7,18 +7,29 @@ import java.util.Scanner;
 public class CNFConverter {
 
     public static void main(String args[]) {
+        // Parse the inputs
         Scanner sc = new Scanner(System.in);
         String sentence = sc.nextLine();
         sc.close();
+        
+        //Remove whitespace, create a tree using resultant string
         sentence = sentence.replaceAll("\\s", "");
         Tree tree = new Tree(sentence);
 
+        // Apply the steps of CNF Conversion
         tree.removeImplications();
         tree.applyDeMorgans();
         tree.applyDistributions();
+
+        // Collect the clauses ito an unordered lit of unordered strings
+        // I tried using priority queues to prevent unneeded sorting,
+        // but for some reason that gave me problems that sorting didn't
         ArrayList<ArrayList<String>> clauses = tree.collectClauses();
+
+        // Each line (clause) will be added to this arraylit after sorting
         ArrayList<String> clauseStrings = new ArrayList<String>();
 
+        // Sort each clause internally, then ad unique clauses
         for (int i = 0; i < clauses.size(); i++) {
             ArrayList<String> clause = clauses.get(i);
             Collections.sort(clause);
@@ -30,6 +41,8 @@ public class CNFConverter {
             clauseString = clauseString.substring(1);
             if (!clauseStrings.contains(clauseString)) clauseStrings.add(clauseString);
         }
+
+        // Sort the clauses, then print them
         Collections.sort(clauseStrings);
         for (String s: clauseStrings) {
             if (s.charAt(0) != '!') {
