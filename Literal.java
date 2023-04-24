@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 /**
  * A data structure to hold literals
@@ -10,6 +11,26 @@ public class Literal extends Proposition {
     public Literal(boolean isNegative, char letter) {
         super(isNegative);
         this.letter = letter;
+    }
+
+    public Literal(String str) {
+        super(false);
+
+        if (str.length() == 2) {
+            if (str.charAt(0) != '~') {
+                throw new InputMismatchException("Literal Input Error");
+            }
+            this.isNegative = true;
+            str = str.substring(1);
+        }
+
+        if (str.length() != 1) {
+            throw new InputMismatchException("Literal Input Error");
+        }
+
+        this.letter = str.charAt(0);
+
+        
     }
 
     /**
@@ -52,6 +73,12 @@ public class Literal extends Proposition {
     @Override
     public String toString() {
         return (this.isNegative ? "~" : "") + this.letter;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Literal other = (Literal) o;
+        return this.isNegative == other.isNegative && this.letter == other.letter;
     }
     
 }
